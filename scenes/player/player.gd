@@ -4,7 +4,7 @@ extends RigidBody2D
 export(float, EASE) var ease_slow_down = 0.5
 
 # MOVEMENT
-const IMPULSE = 512.0
+const IMPULSE = 256.0
 const MAX_SPEED = 128.0
 const FRICTION = 0.5
 
@@ -154,12 +154,16 @@ func power_light():
 func power_push():
 	var pos = get_global_pos()
 	for c in get_node("Area2D").get_overlapping_areas():
+		if c.p_god and c.god_time > 0.0:
+			return
 		var ppos = c.get_global_pos()
 		var dir = (ppos - pos).normalized()
 		c.get_parent().set_linear_velocity(dir * PUSH_FORCE)
 
 func power_slow():
 	for c in get_node("Area2D").get_overlapping_areas():
+		if c.p_god and c.god_time > 0.0:
+			return
 		if c.get_parent().get_name() != "middle":
 			c.get_parent().SPEED_MULTIPLIER = 0.0
 

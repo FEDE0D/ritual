@@ -1,5 +1,6 @@
 extends Node2D
 
+export(Color) var bg_color = Color(1, 1, 1, 1)
 var ended = false
 
 func _ready():
@@ -11,6 +12,7 @@ func _ready():
 	print(Stats.points)
 
 	Globals.get("Transition").fadeIn()
+	VisualServer.set_default_clear_color(bg_color)
 
 func win(player):
 	ended = true
