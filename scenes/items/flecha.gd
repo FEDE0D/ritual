@@ -39,3 +39,4 @@ func hacer(player):
 		player.SPEED_MULTIPLIER = 0.0
 	elif vision:
 		player.target /= 2
+		player.target = max(player.target, 0.5)

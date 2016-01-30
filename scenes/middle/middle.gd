@@ -22,3 +22,4 @@ func _on_Area2D_body_enter( body ):
 func turn_on_light(l):
 	for i in range(0, l):
 		get_node("lights").get_child(i).show()
+		get_node("particles").get_child(i).set_emitting(true)

@@ -2,7 +2,8 @@
 extends TileMap
 onready var blocks = get_node("../blocks")
 
-const RATIO_TRAPS = 0.1
+const RATIO_TRAPS = 0.05
+const RATIO_SLIMES = 0.1
 const RATIO_BREAKABLES = 0.5
 
 var breakables = []
@@ -27,6 +28,10 @@ func _ready():
 			c = get_cell(x, y)
 			if c == -1 and rand_range(0, 1) < RATIO_TRAPS:
 				var s = preload("res://scenes/map/blocks/hole.scn").instance()
+				blocks.add_child(s)
+				s.set_pos(Vector2(x*32 + 16, y*32 + 16))
+			elif c== -1 and rand_range(0,1) < RATIO_SLIMES:
+				var s = preload("res://scenes/map/blocks/slime.scn").instance()
 				blocks.add_child(s)
 				s.set_pos(Vector2(x*32 + 16, y*32 + 16))
 			if c == -1 and rand_range(0, 1) < RATIO_BREAKABLES:
