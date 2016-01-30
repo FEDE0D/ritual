@@ -154,9 +154,12 @@ func _fixed_process(delta):
 	# GOD COOLDOWN
 	if god_time > -2.0:
 		god_time = max(god_time - delta, -2.0)
-		if god_time <= 0:
+		if god_time < 0:
 			get_node("AnimationPlayer").stop(true)
 			get_node("AnimationPlayer").seek(0, true)
+		else:
+			var eas = cos(1 - (god_time / GOD_TIMER))
+			get_node("Escudo/CollisionShape2D").get_shape().set_radius( eas * 30.0)
 	
 	# LIGHT MIX
 	var energy = 1.0
@@ -234,6 +237,7 @@ func power_god():
 func do_fall():
 	input_hold_time = 1.0
 	get_node("AnimationPlayer").play("fall")
+	soltar_item()
 
 func do_win():
 	Globals.get("Map").win(self)
@@ -262,6 +266,7 @@ func shoot():
 	
 	Globals.get("Map").add_flecha(f)
 	f.add_collision_exception_with(self)
+	f.add_collision_exception_with(get_node("Escudo"))
 	f.set_global_pos(get_global_pos() + dir*10.0)
 	f.set_linear_velocity(dir * ARROW_SPEED)
 	f.set_rot(dir.angle()+deg2rad(90))

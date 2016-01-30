@@ -9,7 +9,6 @@ var item_tomados = 0
 
 func _ready():
 	Globals.set("Map", self)
-	set_process_input(true)
 	get_tree().set_pause(false)
 	
 	print("SET POWERS ACCORDING TO:")
@@ -17,8 +16,9 @@ func _ready():
 
 	Globals.get("Transition").fadeIn()
 	VisualServer.set_default_clear_color(bg_color)
+	winner = null
 	
-#	get_node("players").get_child(randi()%4).item = true
+#	get_node("players/player1").item = true
 #	game_over()
 
 func game_over():
@@ -38,7 +38,7 @@ func game_over():
 			Globals.get("Transition").fadeOut()
 		else:
 			print("GAME OVER")
-			Globals.get("Transition").fadeOut()
+			Globals.get("Transition").fadeOutWhite()
 
 #func win(player):
 #	ended = true
@@ -47,10 +47,6 @@ func game_over():
 #	Stats.player_win(player)
 #	get_node("Camera2D").zoom_in(player)
 #	Globals.get("Transition").fadeOut()
-
-func _input(event):
-	if Input.is_action_pressed("fullscreen"):
-		OS.set_window_fullscreen(not OS.is_window_fullscreen())
 
 func add_flecha(f):
 	get_node("flechas").add_child(f)

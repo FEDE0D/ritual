@@ -11,6 +11,9 @@ func fadeIn():
 func fadeOut():
 	get_node("AnimationPlayer").play("fadeOut")
 
+func fadeOutWhite():
+	get_node("AnimationPlayer").play("fadeOutWhite")
+
 
 func _on_AnimationPlayer_finished():
 	if get_node("AnimationPlayer").get_current_animation().begins_with("fadeOut"):
@@ -21,4 +24,4 @@ func _on_AnimationPlayer_finished():
 				get_tree().change_scene("res://scenes/map/map.scn")
 		else: # todos perdieron, reset
 			Stats.reset()
-			get_tree().change_scene("res://scenes/map/map.scn")
+			get_node("MessageGameOver/AnimationPlayer").play("show")
