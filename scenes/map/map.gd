@@ -18,8 +18,8 @@ func _ready():
 	Globals.get("Transition").fadeIn()
 	VisualServer.set_default_clear_color(bg_color)
 	
-	get_node("players").get_child(randi()%4).item = true
-	game_over()
+#	get_node("players").get_child(randi()%4).item = true
+#	game_over()
 
 func game_over():
 	if not ended:
@@ -61,6 +61,7 @@ func item_tomado():
 	if item_tomados == 4:
 		get_node("layers/TileMap").abrir()
 		get_node("GUI").show_timer()
+		get_node("SamplePlayer").play("timer")
 
 func add_item(i):
 	get_node("middle").add_child(i)

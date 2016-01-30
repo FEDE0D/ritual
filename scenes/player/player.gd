@@ -73,7 +73,7 @@ func _ready():
 	flecha_tipo = randi() % 3
 
 func post_ready():
-	p_push = true
+#	p_push = true
 	if p_push:
 		labelPower.set_text("PUSH")
 	elif p_slow:
@@ -144,7 +144,6 @@ func _fixed_process(delta):
 	# SPEED COOLDOWN
 	if SPEED_MULTIPLIER < 1.0:
 		SPEED_MULTIPLIER = min(SPEED_MULTIPLIER +delta * 0.5, 1.0)
-		print(SPEED_MULTIPLIER)
 	
 	# LIGHT COOLDOWN
 	if light.get_scale().x >= target and not Input.is_action_pressed(i_prefijo + ACTION3):
@@ -209,14 +208,24 @@ func power_push():
 		var dir = (ppos - pos).normalized()
 		c.get_parent().set_linear_velocity(dir * PUSH_FORCE)
 		c.get_parent().soltar_item()
+		
+		var r = randi()%4
+		if r == 0:
+			get_node("SamplePlayer").play("Empuje_1")
+		if r == 1:
+			get_node("SamplePlayer").play("Empuje_2")
+		if r == 2:
+			get_node("SamplePlayer").play("Empuje_3")
+		if r == 3:
+			get_node("SamplePlayer").play("Empuje_4")
 
 func power_slow():
-	return
 	for c in get_node("Area2D").get_overlapping_areas():
-		if c.has_pro("p_god") and c.p_god and c.god_time > 0.0:
-			return
+		if c.get_parent().p_god and c.get_parent().god_time > 0.0:
+			break
 		if c.get_parent().get_name() != "middle":
 			c.get_parent().SPEED_MULTIPLIER = 0.0
+			get_node("SamplePlayer").play("TimeDown")
 
 func power_god():
 	god_time = GOD_TIMER
@@ -256,12 +265,15 @@ func shoot():
 	f.set_global_pos(get_global_pos() + dir*10.0)
 	f.set_linear_velocity(dir * ARROW_SPEED)
 	f.set_rot(dir.angle()+deg2rad(90))
+	
+	get_node("SamplePlayer").play("hit_2")
 
 func agarrar_item(tex):
 	if not item and input_hold_time <= 0.0:
 		item = true
 		get_node("graphics/item").set_texture(tex)
 		max_speed_item = MAX_SPEED_ITEM_PLUS
+		get_node("SamplePlayer").play("item_on")
 		return true
 
 func soltar_item():
@@ -273,5 +285,6 @@ func soltar_item():
 		input_hold_time = INPUT_HOLD_TIMER
 		get_node("AnimationPlayer").play("flash")
 		get_node("graphics/item").set_texture(null)
+		get_node("SamplePlayer").play("item_off")
 		
 		max_speed_item = 0.0
