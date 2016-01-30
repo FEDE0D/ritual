@@ -15,7 +15,9 @@ func _ready():
 func win(player):
 	ended = true
 #	get_tree().set_pause(true)
+
 	Stats.player_win(player)
+	get_node("Camera2D").zoom_in(player)
 	Globals.get("Transition").fadeOut()
 
 func _input(event):

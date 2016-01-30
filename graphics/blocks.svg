@@ -74,8 +74,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="22.152409"
-     inkscape:cy="178.89225"
+     inkscape:cx="56.497596"
+     inkscape:cy="246.31993"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -122,5 +122,15 @@
        style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:url(#linearGradient4156);fill-opacity:1;fill-rule:nonzero;stroke:#d4aa00;stroke-width:0.97472;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#aad400;fill-opacity:1;fill-rule:nonzero;stroke:#88aa00;stroke-width:0.97472;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="rect6722"
+       width="31.02528"
+       height="31.02528"
+       x="59.429523"
+       y="781.90747"
+       ry="0.014282231" />
   </g>
 </svg>
