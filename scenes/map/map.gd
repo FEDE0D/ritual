@@ -17,6 +17,9 @@ func _ready():
 
 	Globals.get("Transition").fadeIn()
 	VisualServer.set_default_clear_color(bg_color)
+	
+	get_node("players").get_child(randi()%4).item = true
+	game_over()
 
 func game_over():
 	if not ended:
@@ -30,6 +33,7 @@ func game_over():
 		if winner != null:
 			print("WINNER: ", winner)
 			Stats.player_win(winner)
+			get_node("GUI").update_stats()
 			get_node("Camera2D").zoom_in(winner)
 			Globals.get("Transition").fadeOut()
 		else:
@@ -38,7 +42,7 @@ func game_over():
 
 #func win(player):
 #	ended = true
-	get_tree().set_pause(true)
+#	get_tree().set_pause(true)
 #
 #	Stats.player_win(player)
 #	get_node("Camera2D").zoom_in(player)

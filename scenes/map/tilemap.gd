@@ -2,14 +2,17 @@
 extends TileMap
 onready var blocks = get_node("../blocks")
 
-const RATIO_TRAPS = 0.05
-const RATIO_SLIMES = 0.1
+const RATIO_TRAPS = 0.04
+const RATIO_SLIMES = 0.07
 const RATIO_BREAKABLES = 0.5
+const RATIO_IMPULSORS = 0.02
+const RATIO_SMOKE = 0.01
 
 var breakables = []
 
 func _ready():
 	var c = 0
+	randomize()
 	for x in range(0, 20):
 		for y in range(0, 20):
 			if x >= 0 and x <= 3:
@@ -30,8 +33,17 @@ func _ready():
 				var s = preload("res://scenes/map/blocks/hole.scn").instance()
 				blocks.add_child(s)
 				s.set_pos(Vector2(x*32 + 16, y*32 + 16))
-			elif c== -1 and rand_range(0,1) < RATIO_SLIMES:
+			elif c == -1 and rand_range(0,1) < RATIO_SLIMES:
 				var s = preload("res://scenes/map/blocks/slime.scn").instance()
+				blocks.add_child(s)
+				s.set_pos(Vector2(x*32 + 16, y*32 + 16))
+			elif c == -1 and rand_range(0, 1) < RATIO_IMPULSORS:
+				var s = preload("res://scenes/map/blocks/impulse.scn").instance()
+				blocks.add_child(s)
+				s.set_pos(Vector2(x*32 + 16, y*32 + 16))
+				s.set_rot(deg2rad(randi()%4 * 90))
+			elif c == -1 and rand_range(0, 1) < RATIO_SMOKE:
+				var s = preload("res://scenes/map/blocks/smoke.scn").instance()
 				blocks.add_child(s)
 				s.set_pos(Vector2(x*32 + 16, y*32 + 16))
 			if c == -1 and rand_range(0, 1) < RATIO_BREAKABLES:
@@ -39,6 +51,7 @@ func _ready():
 				blocks.add_child(s)
 				breakables.append(s)
 				s.set_pos(Vector2(x*32 + 16, y*32 + 16))
+			
 	
 	# Agregar los 4 items al azar en los breakables
 	for c in range(0, 4):

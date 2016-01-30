@@ -76,6 +76,60 @@
        fx="57.442169"
        fy="320.63434"
        r="16" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4138"
+       id="radialGradient4169"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(99.176973,554.888)"
+       cx="57.442169"
+       cy="320.63434"
+       fx="57.442169"
+       fy="320.63434"
+       r="16" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow"
+       id="filter4233">
+      <feFlood
+         flood-opacity="1"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood4235" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="out"
+         result="composite1"
+         id="feComposite4237" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="3.19149"
+         result="blur"
+         id="feGaussianBlur4239" />
+      <feOffset
+         dx="0.5"
+         dy="0.5"
+         result="offset"
+         id="feOffset4241" />
+      <feComposite
+         in="offset"
+         in2="SourceGraphic"
+         operator="atop"
+         result="composite2"
+         id="feComposite4243" />
+    </filter>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4138"
+       id="radialGradient4261"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(99.176973,554.888)"
+       cx="57.442169"
+       cy="320.63434"
+       fx="57.442169"
+       fy="320.63434"
+       r="16" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -84,9 +138,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="92.025702"
-     inkscape:cy="176.07023"
+     inkscape:zoom="3.959798"
+     inkscape:cx="188.82885"
+     inkscape:cy="177.31052"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -227,6 +281,51 @@
            id="path3368"
            inkscape:connector-curvature="0"
            sodipodi:nodetypes="ssss" />
+      </g>
+    </g>
+    <g
+       id="g4245"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:url(#radialGradient4169);fill-opacity:1;fill-rule:nonzero;stroke:#53676c;stroke-width:0.97472;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         id="rect4167"
+         width="31.02528"
+         height="31.02528"
+         x="141.10651"
+         y="860.0097"
+         ry="0.014282231"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         sodipodi:nodetypes="cccccccc"
+         inkscape:connector-curvature="0"
+         id="path4171"
+         d="m 152.61692,875.10326 0,11.22227 8.0245,0 0,-11.22227 6.02226,0 -10.04453,-10.3841 -10.04453,10.3841 z"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#536c5d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;filter:url(#filter4233)" />
+    </g>
+    <g
+       id="g4255"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       transform="translate(60,0)">
+      <rect
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:url(#radialGradient4261);fill-opacity:1;fill-rule:nonzero;stroke:#53676c;stroke-width:0.97472;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         id="rect4257"
+         width="31.02528"
+         height="31.02528"
+         x="141.10651"
+         y="860.0097"
+         ry="0.014282231"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <g
+         id="g4303">
+        <path
+           style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#536c5d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter4233);color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+           d="M 216.61914 66.677734 L 210.5918 72.908203 L 214.21875 72.908203 L 214.21875 76.759766 L 210.36719 76.759766 L 210.36719 73.132812 L 204.13672 79.160156 L 210.36719 85.1875 L 210.36719 81.574219 L 214.21875 81.574219 L 214.21875 85.412109 L 210.5918 85.412109 L 216.61914 91.642578 L 222.64648 85.412109 L 219.0332 85.412109 L 219.0332 81.574219 L 222.87109 81.574219 L 222.87109 85.1875 L 229.10156 79.160156 L 222.87109 73.132812 L 222.87109 76.759766 L 219.0332 76.759766 L 219.0332 72.908203 L 222.64648 72.908203 L 216.61914 66.677734 z "
+           transform="translate(-60,796.36216)"
+           id="path4259" />
       </g>
     </g>
   </g>

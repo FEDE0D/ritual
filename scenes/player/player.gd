@@ -25,6 +25,8 @@ var item = false
 const GOD_TIMER = 2.0
 var god_time = -2.0
 
+var inverse_time = 0.0
+
 export(bool) var p_light = true
 export(bool) var p_push = false
 export(bool) var p_slow = false
@@ -98,6 +100,16 @@ func _fixed_process(delta):
 		if Input.is_action_pressed(i_prefijo + DOWN):
 			vel.y = 1
 			sprite.set_frame(0)
+		if inverse_time > 0.0:
+			vel = vel * Vector2(-1, -1)
+			if vel.x == -1:
+				sprite.set_frame(1)
+			elif vel.x == 1:
+				sprite.set_frame(2)
+			elif vel.y == -1:
+				sprite.set_frame(3)
+			elif vel.x == 1:
+				sprite.set_frame(0)
 	
 	if vel != Vector2() and SPEED_MULTIPLIER > 0.75:
 		apply_impulse(Vector2(), vel * IMPULSE * ease(SPEED_MULTIPLIER, ease_slow_down) * delta)
@@ -176,6 +188,10 @@ func _fixed_process(delta):
 	# ITEM TIMER
 	if item_time > 0.0:
 		item_time = max(item_time - delta, 0.0)
+	
+	# INVERSE TIMER
+	if inverse_time > 0.0:
+		inverse_time = max(inverse_time - delta, 0.0)
 
 func power_light():
 	var scale = light.get_scale()
