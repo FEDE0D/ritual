@@ -6,5 +6,5 @@ func _ready():
 
 func _on_item_body_enter( body ):
 	if body.has_method("agarrar_item"):
-		body.agarrar_item(get_node("Sprite").get_texture())
-		queue_free()
+		if body.agarrar_item(get_node("Sprite").get_texture()):
+			queue_free()

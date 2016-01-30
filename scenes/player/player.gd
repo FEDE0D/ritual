@@ -4,9 +4,9 @@ extends RigidBody2D
 export(float, EASE) var ease_slow_down = 0.5
 
 # MOVEMENT
-const IMPULSE = 512.0
-const MAX_SPEED = 256.0
-const FRICTION = 0.5
+const IMPULSE = 1024.0
+const MAX_SPEED = 128.0
+const FRICTION = 0.87
 
 const INPUT_HOLD_TIMER = 1.0
 var input_hold_time = 0.0
@@ -28,13 +28,14 @@ export(bool) var p_push = false
 export(bool) var p_slow = false
 export(bool) var p_god = false
 
-export(String) var i_left = "ui_left"
-export(String) var i_right = "ui_right"
-export(String) var i_up = "ui_up"
-export(String) var i_down = "ui_down"
-export(String) var i_action1 = "p1_action1"
-export(String) var i_action2 = "p1_action2"
-export(String) var i_action3 = "p1_action3"
+export(String) var i_prefijo = "p1"
+const LEFT = "_left"
+const UP = "_up"
+const DOWN = "_down"
+const RIGHT = "_right"
+const ACTION1 = "_action1"
+const ACTION2 = "_action2"
+const ACTION3 = "_action3"
 
 var can_shoot = true
 const SHOOT_TIMER = 0.25
@@ -51,6 +52,7 @@ onready var labelPower = get_node("LabelPower")
 # LEVEL
 onready var points = Stats.points[get_name()]
 var target = 0
+var flecha_tipo = 0
 
 func _ready():
 	set_fixed_process(true)
@@ -62,6 +64,8 @@ func _ready():
 		target = 0.5
 	target *= 0.5
 	light.set_scale(Vector2(target, target))
+	
+	flecha_tipo = randi() % 3
 
 func post_ready():
 	p_push = true
@@ -79,22 +83,18 @@ func _fixed_process(delta):
 	var vel = Vector2()
 	var sprite = get_node("graphics/Sprite1")
 	if not Globals.get("Map").ended and input_hold_time <= 0.0:
-		if Input.is_action_pressed(i_left):
+		if Input.is_action_pressed(i_prefijo + LEFT):
 			vel.x = -1
 			sprite.set_frame(1)
-		elif Input.is_action_pressed(i_right):
+		if Input.is_action_pressed(i_prefijo + RIGHT):
 			vel.x = 1
 			sprite.set_frame(2)
-		else:
-			vel.x = 0
-		if Input.is_action_pressed(i_up):
+		if Input.is_action_pressed(i_prefijo + UP):
 			vel.y = -1
 			sprite.set_frame(3)
-		elif Input.is_action_pressed(i_down):
+		if Input.is_action_pressed(i_prefijo + DOWN):
 			vel.y = 1
 			sprite.set_frame(0)
-		else:
-			vel.y = 0
 	
 	if vel != Vector2() and SPEED_MULTIPLIER > 0.75:
 		apply_impulse(Vector2(), vel * IMPULSE * ease(SPEED_MULTIPLIER, ease_slow_down) * delta)
@@ -104,13 +104,14 @@ func _fixed_process(delta):
 		set_linear_velocity(get_linear_velocity() * FRICTION)
 	
 	# ACTIONS
-	if Input.is_action_pressed(i_action1) and p_light:
-		power_push()
-	if Input.is_action_pressed(i_action2):
+	if Input.is_action_pressed(i_prefijo + ACTION3) and p_light:
+		power_light()
+	if Input.is_action_pressed(i_prefijo + ACTION1):
 		if can_shoot:
 			if shoot_time <= 0:
 				can_shoot = false
 				shoot()
+	if Input.is_action_pressed(i_prefijo + ACTION2):
 		if p_push:
 			labelPower.show()
 			power_push()
@@ -131,7 +132,7 @@ func _fixed_process(delta):
 		print(SPEED_MULTIPLIER)
 	
 	# LIGHT COOLDOWN
-	if light.get_scale().x >= target and not Input.is_action_pressed(i_action3):
+	if light.get_scale().x >= target and not Input.is_action_pressed(i_prefijo + ACTION3):
 		light.set_scale(light.get_scale() - Vector2(1, 1)*delta*0.25)
 		if light.get_scale().x < target:
 			light.set_scale(Vector2(target, target))
@@ -175,7 +176,7 @@ func _fixed_process(delta):
 
 func power_light():
 	var scale = light.get_scale()
-	if scale.x < target*2:
+	if scale.x < target * 2:
 		light.set_scale(scale + Vector2(target*2, target*2)/60.0)
 		if light.get_scale().x > target*2:
 			light.set_scale(Vector2(target*2, target*2))
@@ -221,9 +222,16 @@ func shoot():
 	elif get_node("graphics/Sprite1").get_frame() == 2:
 		dir = Vector2(1, 0)
 		
-	var f = preload("res://scenes/items/flecha_corta.scn").instance()
+	var f = preload("res://scenes/items/flecha.scn").instance()
 	if item:
-		f = preload("res://scenes/items/flecha.scn").instance()
+		f.es_corta = false
+	if flecha_tipo == 0:
+		f.empuja = true
+	elif flecha_tipo == 1:
+		f.ralentiza = true
+	elif flecha_tipo == 2:
+		f.vision = true
+	
 	Globals.get("Map").add_flecha(f)
 	f.add_collision_exception_with(self)
 	f.set_global_pos(get_global_pos() + dir*10.0)
@@ -235,11 +243,14 @@ func agarrar_item(tex):
 	if input_hold_time <= 0.0:
 		item = true
 		get_node("graphics/item").set_texture(tex)
+		return true
 
 func soltar_item():
 	if item:
+		item = false
 		var i = preload("res://scenes/items/heart.scn").instance()
 		Globals.get("Map").add_item(i)
 		i.set_global_pos(get_global_pos())
 		input_hold_time = INPUT_HOLD_TIMER
 		get_node("AnimationPlayer").play("flash")
+		get_node("graphics/item").set_texture(null)
