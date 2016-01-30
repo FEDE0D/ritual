@@ -4,17 +4,21 @@ extends RigidBody2D
 export(float, EASE) var ease_slow_down = 0.5
 
 # MOVEMENT
-const IMPULSE = 256.0
-const MAX_SPEED = 128.0
+const IMPULSE = 512.0
+const MAX_SPEED = 256.0
 const FRICTION = 0.5
 
 const INPUT_HOLD_TIMER = 1.0
 var input_hold_time = 0.0
 
+var vel = Vector2()
+
 # POWERS
 const PUSH_FORCE = 500.0
 var SPEED_MULTIPLIER = 1.0
 const LIGHT_MIX_MAX = 1.5
+
+var item = false
 
 const GOD_TIMER = 2.0
 var god_time = -2.0
@@ -31,6 +35,14 @@ export(String) var i_down = "ui_down"
 export(String) var i_action1 = "p1_action1"
 export(String) var i_action2 = "p1_action2"
 export(String) var i_action3 = "p1_action3"
+
+var can_shoot = true
+const SHOOT_TIMER = 0.25
+var shoot_time = 0.0
+
+const ITEM_TIMER = 1.0
+var item_time = 0.0
+
 
 # NODES
 onready var light = get_node("Light2D")
@@ -52,6 +64,7 @@ func _ready():
 	light.set_scale(Vector2(target, target))
 
 func post_ready():
+	p_push = true
 	if p_push:
 		labelPower.set_text("PUSH")
 	elif p_slow:
@@ -69,15 +82,19 @@ func _fixed_process(delta):
 		if Input.is_action_pressed(i_left):
 			vel.x = -1
 			sprite.set_frame(1)
-		if Input.is_action_pressed(i_right):
+		elif Input.is_action_pressed(i_right):
 			vel.x = 1
 			sprite.set_frame(2)
+		else:
+			vel.x = 0
 		if Input.is_action_pressed(i_up):
 			vel.y = -1
 			sprite.set_frame(3)
-		if Input.is_action_pressed(i_down):
+		elif Input.is_action_pressed(i_down):
 			vel.y = 1
 			sprite.set_frame(0)
+		else:
+			vel.y = 0
 	
 	if vel != Vector2() and SPEED_MULTIPLIER > 0.75:
 		apply_impulse(Vector2(), vel * IMPULSE * ease(SPEED_MULTIPLIER, ease_slow_down) * delta)
@@ -90,6 +107,10 @@ func _fixed_process(delta):
 	if Input.is_action_pressed(i_action1) and p_light:
 		power_push()
 	if Input.is_action_pressed(i_action2):
+		if can_shoot:
+			if shoot_time <= 0:
+				can_shoot = false
+				shoot()
 		if p_push:
 			labelPower.show()
 			power_push()
@@ -100,6 +121,7 @@ func _fixed_process(delta):
 			labelPower.show()
 			power_god()
 	else:
+		can_shoot = true
 		labelPower.hide()
 	
 	# EFFECTS
@@ -143,6 +165,13 @@ func _fixed_process(delta):
 			get_node("graphics").set_scale(Vector2(1, 1))
 			get_node("AnimationPlayer").play("flash")
 	
+	# SHOOT TIMER
+	if shoot_time > 0.0:
+		shoot_time = max(shoot_time - delta, 0.0)
+		
+	# ITEM TIMER
+	if item_time > 0.0:
+		item_time = max(item_time - delta, 0.0)
 
 func power_light():
 	var scale = light.get_scale()
@@ -154,15 +183,17 @@ func power_light():
 func power_push():
 	var pos = get_global_pos()
 	for c in get_node("Area2D").get_overlapping_areas():
-		if c.p_god and c.god_time > 0.0:
-			return
+#		#if c.p_god and c.god_time > 0.0:
+#		#	return
 		var ppos = c.get_global_pos()
 		var dir = (ppos - pos).normalized()
 		c.get_parent().set_linear_velocity(dir * PUSH_FORCE)
+		c.get_parent().soltar_item()
 
 func power_slow():
+	return
 	for c in get_node("Area2D").get_overlapping_areas():
-		if c.p_god and c.god_time > 0.0:
+		if c.has_pro("p_god") and c.p_god and c.god_time > 0.0:
 			return
 		if c.get_parent().get_name() != "middle":
 			c.get_parent().SPEED_MULTIPLIER = 0.0
@@ -177,3 +208,38 @@ func do_fall():
 
 func do_win():
 	Globals.get("Map").win(self)
+
+func shoot():
+	shoot_time = SHOOT_TIMER
+	var dir = Vector2()
+	if get_node("graphics/Sprite1").get_frame() == 3:
+		dir = Vector2(0, -1)
+	elif get_node("graphics/Sprite1").get_frame() == 0:
+		dir = Vector2(0, 1)
+	elif get_node("graphics/Sprite1").get_frame() == 1:
+		dir = Vector2(-1, 0)
+	elif get_node("graphics/Sprite1").get_frame() == 2:
+		dir = Vector2(1, 0)
+		
+	var f = preload("res://scenes/items/flecha_corta.scn").instance()
+	if item:
+		f = preload("res://scenes/items/flecha.scn").instance()
+	Globals.get("Map").add_flecha(f)
+	f.add_collision_exception_with(self)
+	f.set_global_pos(get_global_pos() + dir*10.0)
+	f.set_linear_velocity(dir * 500.0)
+	f.set_rot(dir.angle()+deg2rad(90))
+	print(dir)
+
+func agarrar_item(tex):
+	if input_hold_time <= 0.0:
+		item = true
+		get_node("graphics/item").set_texture(tex)
+
+func soltar_item():
+	if item:
+		var i = preload("res://scenes/items/heart.scn").instance()
+		Globals.get("Map").add_item(i)
+		i.set_global_pos(get_global_pos())
+		input_hold_time = INPUT_HOLD_TIMER
+		get_node("AnimationPlayer").play("flash")

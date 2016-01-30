@@ -18,4 +18,8 @@ func _ready():
 				blocks.add_child(s)
 				s.set_pos(Vector2(x*32 + 16, y*32 + 16))
 
+func abrir():
+	for x in range(7, 12):
+		for y in range(7, 12):
+			set_cell(x, y, -1)
 

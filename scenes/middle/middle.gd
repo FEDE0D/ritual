@@ -7,7 +7,7 @@ func _ready():
 	pass
 
 func _on_Area2D_body_enter( body ):
-	body.do_win()
+#	body.do_win()
 	
 	var pos = get_global_pos()
 	for c in get_node("Area2DWin").get_overlapping_areas():

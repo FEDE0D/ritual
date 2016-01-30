@@ -12,10 +12,15 @@ func _fixed_process(delta):
 		health = max(health - DAMAGE*delta, 0.0)
 		set_opacity(health)
 		if health <= 0.0:
-			queue_free()
+			romper()
+			
 
 func _on_Area2D_body_enter( body ):
 	health = max(health - DAMAGE, 0.0)
 	set_opacity(health)
 	if health <= 0.0:
-		queue_free()
+		romper()
+
+func romper():
+	Globals.get("Map").item_tomado()
+	queue_free()
