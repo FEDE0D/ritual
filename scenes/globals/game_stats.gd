@@ -4,10 +4,7 @@ extends Node
 var points = {}
 
 func _ready():
-	points["player1"] = 0
-	points["player2"] = 0
-	points["player3"] = 0
-	points["player4"] = 0
+	reset()
 
 func player_win(player):
 	var key = player.get_name()
@@ -17,3 +14,8 @@ func player_win(player):
 	
 	points[key] += 1
 
+func reset():
+	points["player1"] = 0
+	points["player2"] = 0
+	points["player3"] = 0
+	points["player4"] = 0

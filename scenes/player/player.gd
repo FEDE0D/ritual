@@ -5,8 +5,10 @@ export(float, EASE) var ease_slow_down = 0.5
 
 # MOVEMENT
 const IMPULSE = 1024.0
-const MAX_SPEED = 128.0
+const MAX_SPEED = 100.0
+const MAX_SPEED_ITEM_PLUS = 35.0
 const FRICTION = 0.87
+var max_speed_item = 0.0
 
 const INPUT_HOLD_TIMER = 1.0
 var input_hold_time = 0.0
@@ -38,8 +40,9 @@ const ACTION2 = "_action2"
 const ACTION3 = "_action3"
 
 var can_shoot = true
-const SHOOT_TIMER = 0.25
+const SHOOT_TIMER = 0.45
 var shoot_time = 0.0
+const ARROW_SPEED = 400.0
 
 const ITEM_TIMER = 1.0
 var item_time = 0.0
@@ -98,8 +101,8 @@ func _fixed_process(delta):
 	
 	if vel != Vector2() and SPEED_MULTIPLIER > 0.75:
 		apply_impulse(Vector2(), vel * IMPULSE * ease(SPEED_MULTIPLIER, ease_slow_down) * delta)
-		if get_linear_velocity().length() > MAX_SPEED: 
-			set_linear_velocity(get_linear_velocity().normalized() * MAX_SPEED)
+		if get_linear_velocity().length() > MAX_SPEED + max_speed_item: 
+			set_linear_velocity(get_linear_velocity().normalized() * (MAX_SPEED + max_speed_item))
 	else:
 		set_linear_velocity(get_linear_velocity() * FRICTION)
 	
@@ -235,14 +238,14 @@ func shoot():
 	Globals.get("Map").add_flecha(f)
 	f.add_collision_exception_with(self)
 	f.set_global_pos(get_global_pos() + dir*10.0)
-	f.set_linear_velocity(dir * 500.0)
+	f.set_linear_velocity(dir * ARROW_SPEED)
 	f.set_rot(dir.angle()+deg2rad(90))
-	print(dir)
 
 func agarrar_item(tex):
-	if input_hold_time <= 0.0:
+	if not item and input_hold_time <= 0.0:
 		item = true
 		get_node("graphics/item").set_texture(tex)
+		max_speed_item = MAX_SPEED_ITEM_PLUS
 		return true
 
 func soltar_item():
@@ -254,3 +257,5 @@ func soltar_item():
 		input_hold_time = INPUT_HOLD_TIMER
 		get_node("AnimationPlayer").play("flash")
 		get_node("graphics/item").set_texture(null)
+		
+		max_speed_item = 0.0

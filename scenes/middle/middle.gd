@@ -18,3 +18,7 @@ func _on_Area2D_body_enter( body ):
 		c.get_parent().apply_impulse(Vector2(), dir * SPEED)
 		c.get_parent().set_linear_velocity(dir * 1000.0)
 		print(dir * SPEED)
+
+func turn_on_light(l):
+	for i in range(0, l):
+		get_node("lights").get_child(i).show()
