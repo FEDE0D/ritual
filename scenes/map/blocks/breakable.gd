@@ -14,7 +14,6 @@ func _fixed_process(delta):
 		set_opacity(health)
 		if health <= 0.0:
 			romper()
-			
 
 func _on_Area2D_body_enter( body ):
 	if health > 0:
@@ -24,7 +23,11 @@ func _on_Area2D_body_enter( body ):
 			romper()
 
 func romper():
+	BreakableSnd.play_sound()
 	if drops_item:
 		Globals.get("Map").item_tomado()
-		# SONIDO!
+		BreakableSnd.play_sound_item()
+	
 	queue_free()
+
+
