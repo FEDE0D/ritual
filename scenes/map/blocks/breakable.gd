@@ -25,7 +25,7 @@ func _on_Area2D_body_enter( body ):
 func romper():
 	BreakableSnd.play_sound()
 	if drops_item:
-		Globals.get("Map").item_tomado()
+		Globals.get("Map").item_tomado(self)
 		BreakableSnd.play_sound_item()
 	
 	queue_free()

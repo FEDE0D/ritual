@@ -47,4 +47,4 @@ func _input(event):
 					Input.action_release("p4_up")
 					Input.action_release("p4_down")
 	
-	print(event)
+#	print(event)

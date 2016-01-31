@@ -23,11 +23,12 @@ func _fixed_process(delta):
 			get_node("AnimationPlayer").play("free")
 
 func _on_flecha_body_enter( body ):
-	free = true
-	get_node("AnimationPlayer").play("free")
 	if body.get_name().begins_with("player"):
 		body.soltar_item()
 		hacer(body)
+#	free = true
+#	get_node("AnimationPlayer").play("free")
+	queue_free()
 
 func hacer(player):
 	if empuja:

@@ -81,6 +81,7 @@ func post_ready():
 		labelPower.set_text("SLOW")
 	elif p_god:
 		labelPower.set_text("GOD")
+		get_node("graphics/Shield").show()
 	labelPower.hide()
 
 func _fixed_process(delta):
@@ -92,9 +93,11 @@ func _fixed_process(delta):
 		if Input.is_action_pressed(i_prefijo + LEFT):
 			vel.x = -1
 			sprite.set_frame(1)
+			get_node("graphics").set_scale(Vector2(1, 1))
 		if Input.is_action_pressed(i_prefijo + RIGHT):
 			vel.x = 1
-			sprite.set_frame(2)
+			sprite.set_frame(1)
+			get_node("graphics").set_scale(Vector2(-1, 1))
 		if Input.is_action_pressed(i_prefijo + UP):
 			vel.y = -1
 			sprite.set_frame(3)
@@ -106,7 +109,8 @@ func _fixed_process(delta):
 			if vel.x == -1:
 				sprite.set_frame(1)
 			elif vel.x == 1:
-				sprite.set_frame(2)
+				sprite.set_frame(1)
+				get_node("graphics").set_scale(Vector2(-1, 1))
 			elif vel.y == -1:
 				sprite.set_frame(3)
 			elif vel.x == 1:
@@ -192,6 +196,7 @@ func _fixed_process(delta):
 	# INVERSE TIMER
 	if inverse_time > 0.0:
 		inverse_time = max(inverse_time - delta, 0.0)
+	
 
 func power_light():
 	var scale = light.get_scale()
@@ -210,6 +215,13 @@ func power_push():
 		c.get_parent().set_linear_velocity(dir * PUSH_FORCE)
 		c.get_parent().soltar_item()
 		
+		# ANIMATION
+		var f = preload("res://scenes/player/effect.scn").instance()
+		add_child(f)
+		f.set_global_pos(get_global_pos())
+		f.set_rot(dir.angle()-deg2rad(90))
+		
+		# SOUND
 		var r = randi()%4
 		if r == 0:
 			get_node("SamplePlayer").play("Empuje_1")
@@ -227,10 +239,25 @@ func power_slow():
 		if c.get_parent().get_name() != "middle":
 			c.get_parent().SPEED_MULTIPLIER = 0.0
 			get_node("SamplePlayer").play("TimeDown")
+			
+			var dir = (c.get_global_pos() - get_global_pos()).normalized()
+			
+			# ANIMATION
+			var f = preload("res://scenes/player/effect.scn").instance()
+			add_child(f)
+			f.set_freeze()
+			f.set_global_pos(get_global_pos())
+			f.set_rot(dir.angle()-deg2rad(90))
+			
+			# SOUND!?
+			
 
 func power_god():
 	god_time = GOD_TIMER
 	get_node("AnimationPlayer").play("god")
+	var shield = preload("res://scenes/player/shield.scn").instance()
+	add_child(shield)
+	
 
 func do_fall():
 	input_hold_time = 1.0
@@ -248,9 +275,7 @@ func shoot():
 	elif get_node("graphics/Sprite1").get_frame() == 0:
 		dir = Vector2(0, 1)
 	elif get_node("graphics/Sprite1").get_frame() == 1:
-		dir = Vector2(-1, 0)
-	elif get_node("graphics/Sprite1").get_frame() == 2:
-		dir = Vector2(1, 0)
+		dir = Vector2(-get_node("graphics").get_scale().x, 0)
 		
 	var f = preload("res://scenes/items/flecha.scn").instance()
 	if item:

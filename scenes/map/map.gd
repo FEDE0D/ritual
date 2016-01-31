@@ -52,9 +52,17 @@ func game_over():
 func add_flecha(f):
 	get_node("flechas").add_child(f)
 
-func item_tomado():
+func item_tomado(breakable = null):
 	item_tomados +=1
 	get_node("middle").turn_on_light(item_tomados)
+	
+	# 
+	if breakable != null:
+		var pos = breakable.get_global_pos()
+		var p = preload("res://scenes/player/papiro.scn").instance()
+		add_child(p)
+		p.set_global_pos(pos)
+	
 	if item_tomados == 4:
 		get_node("layers/TileMap").abrir()
 		get_node("GUI").show_timer()
