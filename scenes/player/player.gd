@@ -3,6 +3,7 @@ extends RigidBody2D
 
 export(float, EASE) var ease_slow_down = 0.5
 export(Color) var light_color = Color("#afc6d3")
+export(Texture) var player_texture = preload("res://graphics/player/player1.png")
 
 # MOVEMENT
 const IMPULSE = 1024.0
@@ -17,7 +18,7 @@ var input_hold_time = 0.0
 var vel = Vector2()
 
 # POWERS
-const PUSH_FORCE = 500.0
+const PUSH_FORCE = 800.0
 var SPEED_MULTIPLIER = 1.0
 var MAX_SPEED_MULTIPLIER = 1.0
 const LIGHT_MIX_MAX = 1.5
@@ -74,6 +75,7 @@ func _ready():
 	
 	flecha_tipo = randi() % 3
 	get_node("Light2D").set_color(light_color)
+	get_node("graphics/Sprite1").set_texture(player_texture)
 
 func post_ready():
 #	p_push = true
@@ -153,7 +155,7 @@ func _fixed_process(delta):
 	# EFFECTS
 	# SPEED COOLDOWN
 	if SPEED_MULTIPLIER < 1.0:
-		SPEED_MULTIPLIER = min(SPEED_MULTIPLIER +delta * 0.5, 1.0)
+		SPEED_MULTIPLIER = min(SPEED_MULTIPLIER +delta * 0.25, 1.0)
 	
 	# MAX SPEED COOLDOWN
 	if MAX_SPEED_MULTIPLIER < 1.0:
@@ -247,6 +249,7 @@ func power_slow():
 			break
 		if c.get_parent().get_name() != "middle":
 			c.get_parent().SPEED_MULTIPLIER = 0.0
+			c.get_parent().slow_anim()
 			get_node("SamplePlayer").play("TimeDown")
 			
 			var dir = (c.get_global_pos() - get_global_pos()).normalized()
@@ -270,6 +273,8 @@ func power_god():
 
 func do_fall():
 	input_hold_time = 1.0
+	get_node("AnimationPlayer").seek(0, true)
+	get_node("AnimationPlayer").stop()
 	get_node("AnimationPlayer").play("fall")
 	soltar_item()
 
@@ -326,3 +331,6 @@ func soltar_item():
 		get_node("SamplePlayer").play("item_off")
 		
 		max_speed_item = 0.0
+
+func slow_anim():
+	get_node("graphics/Ice/AnimationPlayer").play("show")
