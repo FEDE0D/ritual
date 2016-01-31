@@ -9,3 +9,4 @@ func _on_smoke_body_enter( body ):
 #	get_node("AnimationPlayer").play("free")
 #	body.SPEED_MULTIPLIER = 0.0
 	body.inverse_time = 4.0
+	get_node("SamplePlayer").play("Gas")

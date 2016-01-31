@@ -20,7 +20,7 @@ func _ready():
 	
 #	get_node("players/player1").item = true
 #	game_over()
-	set_process_input(true)
+	
 
 func game_over():
 	if not ended:
@@ -56,7 +56,9 @@ func item_tomado(breakable = null):
 	item_tomados +=1
 	get_node("middle").turn_on_light(item_tomados)
 	
-	# 
+	# SONIDO
+	get_node("SamplePlayer").play("pergamino2")
+	
 	if breakable != null:
 		var pos = breakable.get_global_pos()
 		var p = preload("res://scenes/player/papiro.scn").instance()

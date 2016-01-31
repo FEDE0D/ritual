@@ -302,6 +302,7 @@ func agarrar_item(tex):
 		get_node("graphics/item").set_texture(tex)
 		max_speed_item = MAX_SPEED_ITEM_PLUS
 		get_node("SamplePlayer").play("item_on")
+		get_node("SamplePlayer").play("corazon")
 		return true
 
 func soltar_item():
