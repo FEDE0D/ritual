@@ -9,7 +9,7 @@ var item_tomados = 0
 
 func _ready():
 	Globals.set("Map", self)
-	get_tree().set_pause(false)
+	get_tree().set_pause(true)
 	
 	print("SET POWERS ACCORDING TO:")
 	print(Stats.points)
@@ -18,7 +18,7 @@ func _ready():
 	VisualServer.set_default_clear_color(bg_color)
 	winner = null
 	
-#	get_node("players/player1").item = true
+#	get_node("players/player3").item = true
 #	game_over()
 
 	# CHECK JOYSTICKS
@@ -31,6 +31,8 @@ func _ready():
 		else:
 			get_node("players").remove_child(get_node("players/player4"))
 
+func unpause():
+	get_tree().set_pause(false)
 
 func game_over():
 	if not ended:
@@ -79,6 +81,7 @@ func item_tomado(breakable = null):
 		get_node("layers/TileMap").abrir()
 		get_node("GUI").show_timer()
 		get_node("SamplePlayer").play("timer")
+		get_node("CanvasModulate").set_color(Color("#161515"))
 
 func add_item(i):
 	get_node("middle").add_child(i)
