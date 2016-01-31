@@ -20,7 +20,17 @@ func _ready():
 	
 #	get_node("players/player1").item = true
 #	game_over()
-	
+
+	# CHECK JOYSTICKS
+	print(Input.is_joy_known(0))
+	print(Input.is_joy_known(1))
+	if not Input.is_joy_known(1):
+		if not Input.is_joy_known(0):
+			get_node("players").remove_child(get_node("players/player3"))
+			get_node("players").remove_child(get_node("players/player4"))
+		else:
+			get_node("players").remove_child(get_node("players/player4"))
+
 
 func game_over():
 	if not ended:

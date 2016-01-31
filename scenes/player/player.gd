@@ -2,6 +2,7 @@
 extends RigidBody2D
 
 export(float, EASE) var ease_slow_down = 0.5
+export(Color) var light_color = Color("#afc6d3")
 
 # MOVEMENT
 const IMPULSE = 1024.0
@@ -18,6 +19,7 @@ var vel = Vector2()
 # POWERS
 const PUSH_FORCE = 500.0
 var SPEED_MULTIPLIER = 1.0
+var MAX_SPEED_MULTIPLIER = 1.0
 const LIGHT_MIX_MAX = 1.5
 
 var item = false
@@ -71,7 +73,7 @@ func _ready():
 	light.set_scale(Vector2(target, target))
 	
 	flecha_tipo = randi() % 3
-	print(get_name(), " ", i_prefijo)
+	get_node("Light2D").set_color(light_color)
 
 func post_ready():
 #	p_push = true
@@ -101,26 +103,29 @@ func _fixed_process(delta):
 		if Input.is_action_pressed(i_prefijo + UP):
 			vel.y = -1
 			sprite.set_frame(3)
+			get_node("graphics").set_scale(Vector2(1, 1))
 		if Input.is_action_pressed(i_prefijo + DOWN):
 			vel.y = 1
 			sprite.set_frame(0)
+			get_node("graphics").set_scale(Vector2(1, 1))
 		if inverse_time > 0.0:
 			vel = vel * Vector2(-1, -1)
 			if vel.x == -1:
 				sprite.set_frame(1)
+				get_node("graphics").set_scale(Vector2(1, 1))
 			elif vel.x == 1:
 				sprite.set_frame(1)
 				get_node("graphics").set_scale(Vector2(-1, 1))
 			elif vel.y == -1:
 				sprite.set_frame(3)
-			elif vel.x == 1:
+			elif vel.y == 1:
 				sprite.set_frame(0)
 	
-	if vel != Vector2() and SPEED_MULTIPLIER > 0.75:
+	if vel != Vector2() and SPEED_MULTIPLIER > 0.2:
 		apply_impulse(Vector2(), vel * IMPULSE * ease(SPEED_MULTIPLIER, ease_slow_down) * delta)
-		if get_linear_velocity().length() > MAX_SPEED + max_speed_item: 
-			set_linear_velocity(get_linear_velocity().normalized() * (MAX_SPEED + max_speed_item))
-	else:
+		if get_linear_velocity().length() > (MAX_SPEED*MAX_SPEED_MULTIPLIER) + max_speed_item: 
+			set_linear_velocity(get_linear_velocity().normalized() * (MAX_SPEED*MAX_SPEED_MULTIPLIER + max_speed_item))
+	else: # SPEED chico
 		set_linear_velocity(get_linear_velocity() * FRICTION)
 	
 	# ACTIONS
@@ -149,6 +154,10 @@ func _fixed_process(delta):
 	# SPEED COOLDOWN
 	if SPEED_MULTIPLIER < 1.0:
 		SPEED_MULTIPLIER = min(SPEED_MULTIPLIER +delta * 0.5, 1.0)
+	
+	# MAX SPEED COOLDOWN
+	if MAX_SPEED_MULTIPLIER < 1.0:
+		MAX_SPEED_MULTIPLIER = min(MAX_SPEED_MULTIPLIER + delta, 1.0)
 	
 	# LIGHT COOLDOWN
 	if light.get_scale().x >= target and not Input.is_action_pressed(i_prefijo + ACTION3):

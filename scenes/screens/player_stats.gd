@@ -2,8 +2,11 @@
 extends TextureFrame
 
 export(int) var player_index = 0
+export(Color) var label_color = Color(1, 1, 1, 1)
 
 func _ready():
+# TODO
+#	get_node("Label")
 	update_stats()
 	
 func update_stats():
