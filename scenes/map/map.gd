@@ -20,6 +20,7 @@ func _ready():
 	
 #	get_node("players/player1").item = true
 #	game_over()
+	set_process_input(true)
 
 func game_over():
 	if not ended:

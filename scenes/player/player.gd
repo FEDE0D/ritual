@@ -32,7 +32,7 @@ export(bool) var p_push = false
 export(bool) var p_slow = false
 export(bool) var p_god = false
 
-export(String) var i_prefijo = "p1"
+export(String) var i_prefijo
 const LEFT = "_left"
 const UP = "_up"
 const DOWN = "_down"
@@ -71,6 +71,7 @@ func _ready():
 	light.set_scale(Vector2(target, target))
 	
 	flecha_tipo = randi() % 3
+	print(get_name(), " ", i_prefijo)
 
 func post_ready():
 #	p_push = true
@@ -157,9 +158,6 @@ func _fixed_process(delta):
 		if god_time < 0:
 			get_node("AnimationPlayer").stop(true)
 			get_node("AnimationPlayer").seek(0, true)
-		else:
-			var eas = cos(1 - (god_time / GOD_TIMER))
-			get_node("Escudo/CollisionShape2D").get_shape().set_radius( eas * 30.0)
 	
 	# LIGHT MIX
 	var energy = 1.0
